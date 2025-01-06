@@ -1,191 +1,90 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:loginb/view/All_Employee.dart';
-import 'package:loginb/view/grid.dart';
+import 'package:loginb/proposal.dart';
+import 'package:loginb/view/CallHistory.dart';
+import 'package:loginb/view/NewContact.dart';
+import 'package:loginb/view/NotQualified.dart';
+import 'package:loginb/view/QualifiedPage.dart';
 
-class contacts extends StatefulWidget {
-  const contacts({super.key});
+class contacts extends StatelessWidget {
+  final List<String> labels = [
+    "New Contact",
+    "Qualified",
+    "Not Qualified",
+    "Proposal",
+    "Follow Up",
+    "Test Label",
+    "Test Demo Label 1",
+    "Report",
+  ];
 
-  @override
-  State<contacts> createState() => _HomeState();
-}
+  final List<Widget> pages = [
+    NewContact(),
+    Qualifiedpage(),
+    Notqualified(),
+    Proposal()
 
-class _HomeState extends State<contacts> {
-
-  int selectedIndex = -1;
-
-  final List<Map<String, dynamic>> data = [
-    {'label': 'New Contact', 'value': 3, 'color': Colors.red},
-    {'label': 'Qualified', 'value': 2, 'color': Colors.orange},
-    {'label': 'Not Qualified', 'value': 1, 'color': Colors.green},
-    {'label': 'Proposal', 'value': 1, 'color': Colors.blue},
-    {'label': 'Follow Up', 'value': 8, 'color': Colors.purple},
-    {'label': 'Gone', 'value': 1, 'color': Colors.teal},
+    // Add additional pages for other labels as needed
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text('Call dialer',style: TextStyle(fontWeight: FontWeight.bold),),
-        automaticallyImplyLeading: false,
+        title: Text("Call Info"),
+
         actions: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding:EdgeInsets.only(
+                right: MediaQuery.of(context).size.width*.05),
             child: InkWell(
-              onTap: (){
-                Get.to(AllEmployee());
-              },
-              child: SizedBox(
-                height: 40,
-                width: 40,
-                child: Image.asset('images/12.png'),
-              ),
-            ),
+                onTap: (){
+                  Get.to(()=>Callhistory());
+                },
+                child: Icon(Icons.filter_list)),
           )
         ],
       ),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
+      body: ListView.builder(
+        itemCount: labels.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width*.02,
+                vertical: MediaQuery.of(context).size.height*.005),
+            child: GestureDetector(
+              onTap: () {
+                // Handle item tap
+                if (index < pages.length) {
+                  Get.to(() => pages[index]);
+                } else {
+                  print("${labels[index]} tapped");
+                }
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: index == 1 ? Colors.blue : Colors.grey,
+                  ),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
                 child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        hintText: 'Select Employee',
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        prefixIcon: Icon(Icons.search)
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    labels[index],
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
                     ),
-
                   ),
                 ),
               ),
-              Padding(
-                padding:const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 50,
-                  width: 50,
-                  color: Colors.grey,
-                  child: Image.asset('images/menu1.png'),
-                ),
-              ),
-            ],
-          ),
-          gridview(),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height*0.280,
-              child: Card(
-                  color: HexColor('#ffffff'),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 150,top: 25),
-                        child: Text('calling Source summary',
-                          style: TextStyle(fontWeight: FontWeight.bold,
-                              fontSize: 15),),
-                      ),
-
-                      Container(
-                        height: MediaQuery.of(context).size.height*0.2,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 22,left: 20),
-                                child: ListView.builder(
-                                  itemCount: data.length,
-                                  itemBuilder: (context, index) {
-                                    final item = data[index];
-                                    return GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          selectedIndex = index;
-                                        });
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 12,
-                                            height: 12,
-                                            decoration: BoxDecoration(
-                                              color: item['color'],
-                                              shape: BoxShape.circle,
-                                            ),
-                                          ),
-                                          SizedBox(width: 15),
-                                          Padding(
-                                            padding: const EdgeInsets.all(2.0),
-                                            child: Text(
-                                              item['label'],
-                                              style: TextStyle(
-                                                color: selectedIndex == index
-                                                    ? Colors.black
-                                                    : Colors.grey,
-                                                fontWeight: selectedIndex == index
-                                                    ? FontWeight.bold
-                                                    : FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding:EdgeInsets.only(bottom:MediaQuery.of(context).size.height*0.028,right:MediaQuery.of(context).size.height*0.03 ),
-                                child: PieChart(
-                                  PieChartData(
-                                    sectionsSpace: 2,
-                                    centerSpaceRadius: 30,
-                                    sections: data.asMap().entries.map((entry) {
-                                      final index = entry.key;
-                                      final item = entry.value;
-                                      final isSelected = selectedIndex == index;
-                                      return PieChartSectionData(
-                                        color: item['color'],
-                                        value: item['value'].toDouble(),
-                                        title: '${item['value']}',
-                                        radius: isSelected ? 70 : 50,
-                                        titleStyle: TextStyle(
-                                          fontSize: isSelected ? 18 : 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ),
-                            ),
-
-                          ],
-                        ),
-                      )
-
-                    ],
-                  )
-              ),
             ),
-          )
-        ],
+          );
+        },
       ),
     );
   }
-
-
 }
+
