@@ -36,15 +36,10 @@ class _HomeState extends State<Home> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-              onTap: (){
-                Get.to(AllEmployee());
-              },
-              child: SizedBox(
-                height: 40,
-                width: 40,
-                child: Image.asset('images/12.png'),
-              ),
+            child: SizedBox(
+              height: 40,
+              width: 40,
+              child: Image.asset('images/12.png'),
             ),
           )
         ],
@@ -70,11 +65,16 @@ class _HomeState extends State<Home> {
               ),
               Padding(
                 padding:const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 50,
-                  width: 50,
-                  color: Colors.grey,
-                  child: Image.asset('images/menu1.png'),
+                child: InkWell(
+                  onTap: (){
+                    Get.to(()=>AllEmployee());
+                  },
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    color: Colors.grey,
+                    child: Image.asset('images/menu1.png'),
+                  ),
                 ),
               ),
             ],
