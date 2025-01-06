@@ -49,37 +49,47 @@ class _LabelDialogState extends State<LabelDialog> {
                   margin: const EdgeInsets.only(bottom: 8),
                   child: Column(
                     children: [
-                      Text('Add New label'),
-                      TextField(
-                        controller: controller,
-                        decoration: InputDecoration(
-                          hintText: "Contacted",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
+                      Padding(
+                        padding:EdgeInsets.only(right: MediaQuery.of(context).size.width*0.4),
+                        child: Text('Add New label'),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: controller,
+                              decoration: InputDecoration(
+                                hintText: "Contacted",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                                suffixIcon: IconButton(
+                                  icon: const Icon(Icons.delete, color: Colors.red),
+                                  onPressed: () => _deleteTextField(index),
+                                ),
+                              ),
+                            ),
                           ),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () => _deleteTextField(index),
+                          ElevatedButton(
+                            onPressed: _addNewTextField,
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(12),
+                              shape: const CircleBorder(),
+                              backgroundColor: Colors.blue,
+                            ),
+                            child: const Icon(Icons.add, color: Colors.white),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
                 );
               }).toList(),
             ),
-            const SizedBox(height: 8),
+            
             // "+" Button to Add Another TextField
-            ElevatedButton(
-              onPressed: _addNewTextField,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(12),
-                shape: const CircleBorder(),
-                backgroundColor: Colors.blue,
-              ),
-              child: const Icon(Icons.add, color: Colors.white),
-            ),
+
           ],
         ),
       ),
